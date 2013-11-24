@@ -5,8 +5,6 @@
 package br.mackenzie.pos.works.percistenceandclientserver.service;
 
 import javax.ejb.Stateless;
-import javax.inject.Inject;
-import javax.persistence.EntityManager;
 
 import br.mackenzie.pos.works.percistenceandclientserver.domain.product.Ebook;
 import br.mackenzie.pos.works.percistenceandclientserver.util.dto.EbookDTO;
@@ -14,9 +12,8 @@ import br.mackenzie.pos.works.percistenceandclientserver.util.dto.EbookDTO;
 @Stateless
 public class EbookService extends Service<Ebook, EbookDTO> {
 
-    @Inject
-    public EbookService(final EntityManager em) {
-        super(Ebook.class, "ebook", em);
+    public EbookService() {
+        super(Ebook.class, "ebook");
     }
 
     @Override

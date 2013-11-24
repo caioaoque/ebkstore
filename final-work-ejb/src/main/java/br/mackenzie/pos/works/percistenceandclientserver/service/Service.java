@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
 import br.mackenzie.pos.works.percistenceandclientserver.domain.util.DomainEntity;
@@ -30,12 +31,13 @@ public abstract class Service<E extends DomainEntity<?>, T extends DTO<E>> {
     private final Class<E> type;
     protected final String alias;
     protected final Map<String, Object> parameters = new HashMap<String, Object>();
-    protected final EntityManager em;
 
-    protected Service(final Class<E> type, final String alias, final EntityManager em) {
+    @PersistenceContext
+    protected EntityManager em;
+
+    protected Service(final Class<E> type, final String alias) {
         this.type = type;
         this.alias = alias;
-        this.em = em;
     }
 
     // Methods used to query for T Objects
