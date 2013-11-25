@@ -32,7 +32,7 @@ public abstract class Service<E extends DomainEntity<?>, T extends DTO<E>> {
     protected final String alias;
     protected final Map<String, Object> parameters = new HashMap<String, Object>();
 
-    @PersistenceContext
+    @PersistenceContext(unitName = "finalWork")
     protected EntityManager em;
 
     protected Service(final Class<E> type, final String alias) {

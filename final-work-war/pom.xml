@@ -2,20 +2,13 @@
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>br.mackenzie.pos.works.percistenceandclientserver</groupId>
-    <artifactId>final-work-ejb</artifactId>
-    <packaging>jar</packaging>
+    <artifactId>final-work-war</artifactId>
+    <packaging>war</packaging>
     <version>0.0.1-SNAPSHOT</version>
-    <name>final-work EJB</name>
+    <name>final-work Webapp</name>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
-
-    <repositories>
-        <repository>
-            <id>Jboss</id>
-            <url>https://repository.jboss.org/nexus/content/groups/public</url>
-        </repository>
-    </repositories>
 
     <dependencies>
         <dependency>
@@ -24,21 +17,23 @@
             <version>4.11</version>
             <scope>test</scope>
         </dependency>
-
+        <dependency>
+            <groupId>com.sun.faces</groupId>
+            <artifactId>jsf-impl</artifactId>
+            <version>2.2.4</version>
+        </dependency>
         <dependency>
             <groupId>javax</groupId>
             <artifactId>javaee-api</artifactId>
             <version>7.0</version>
         </dependency>
-
         <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-entitymanager</artifactId>
-            <version>4.2.7.SP1</version>
+            <groupId>br.mackenzie.pos.works.percistenceandclientserver</groupId>
+            <artifactId>final-work-ejb</artifactId>
+            <type>ejb</type>
+            <version>0.0.1-SNAPSHOT</version>
         </dependency>
-
     </dependencies>
-
     <build>
         <plugins>
             <plugin>
@@ -61,7 +56,6 @@
                 </configuration>
             </plugin>
         </plugins>
-        <finalName>final-work-ejb</finalName>
+        <finalName>final-work-war</finalName>
     </build>
-
 </project>
