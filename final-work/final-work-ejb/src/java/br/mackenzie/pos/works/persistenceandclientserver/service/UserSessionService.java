@@ -1,5 +1,6 @@
 package br.mackenzie.pos.works.persistenceandclientserver.service;
 
+import br.mackenzie.pos.works.persistenceandclientserver.domain.management.Role;
 import javax.ejb.Remove;
 import javax.ejb.Stateful;
 import javax.enterprise.context.SessionScoped;
@@ -38,6 +39,14 @@ public class UserSessionService {
     @Remove
     public void logout() {
         this.user = null;
+    }
+
+    public boolean hasRole(Role role) {
+        return this.user != null && role.equals(this.user.getRole());
+    }
+
+    public boolean isLogged() {
+        return this.user != null;
     }
 
 }

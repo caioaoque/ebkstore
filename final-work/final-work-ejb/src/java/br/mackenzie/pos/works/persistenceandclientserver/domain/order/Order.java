@@ -1,5 +1,6 @@
 package br.mackenzie.pos.works.persistenceandclientserver.domain.order;
 
+import br.mackenzie.pos.works.persistenceandclientserver.domain.management.Customer;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -19,6 +20,7 @@ import javax.persistence.TemporalType;
 
 import br.mackenzie.pos.works.persistenceandclientserver.domain.product.Ebook;
 import br.mackenzie.pos.works.persistenceandclientserver.domain.util.DomainEntity;
+import javax.persistence.ManyToOne;
 
 @Entity
 @Table(name = "orders")
@@ -29,6 +31,10 @@ public class Order implements DomainEntity<String> {
     @Id
     @Column(name = "ord_code")
     private String code;
+
+    @ManyToOne
+    @JoinColumn(name = "usr_login")
+    private Customer customer;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "ord_creation", insertable = false, updatable = false)
@@ -52,6 +58,14 @@ public class Order implements DomainEntity<String> {
 
     public void setCode(final String code) {
         this.code = code;
+    }
+
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
     }
 
     public Date getCreation() {

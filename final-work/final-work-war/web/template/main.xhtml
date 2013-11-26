@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://xmlns.jcp.org/jsf/facelets" xmlns:h="http://xmlns.jcp.org/jsf/html">
 
     <h:head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -21,20 +21,16 @@
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <h:panelGroup id="bs-example-navbar-collapse-1" styleClass="collapse navbar-collapse" layout="block"
+                          rendered="#{!userSessionMBean.logged or userSessionBean.hasRole('CUSTOMER')}">
                 <ul class="nav navbar-nav">
-                    <li class="active"><a href="#">Link</a></li>
-                    <li><a href="#">Link</a></li>
-                    <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
+                    <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Categorias <b class="caret"></b></a>
                         <ul class="dropdown-menu">
-                            <li><h:link value="Cadastro de usuários" outcome="" rendered="true"/></li>
-                            <li><a href="#">Another action</a></li>
-                            <li><a href="#">Something else here</a></li>
-                            <li class="divider"></li>
-                            <li><a href="#">Separated link</a></li>
-                            <li class="divider"></li>
-                            <li><a href="#">One more separated link</a></li>
-                        </ul></li>
+                            <ui:repeat value="#{ebookListMBean.findGenres()}" var="_genre">
+                                <li><h:link value="#{_genre}" outcome="#{ebookListMBean.findByGenre(_genre)}"/></li>
+                            </ui:repeat>
+                        </ul>
+                    </li>
                 </ul>
                 <form class="navbar-form navbar-left" role="search">
                     <div class="form-group">
@@ -53,20 +49,14 @@
                             <li><a href="#">Separated link</a></li>
                         </ul></li>
                 </ul>
-            </div>
+            </h:panelGroup>
             <!-- /.navbar-collapse --> </nav>
         </ui:insert>
 
         <div>
-            <ui:insert name="left">
-
-            </ui:insert>
-            <div id="content" class="left_content">
+            <div id="content" class="content">
                 <ui:insert name="content">conteúdo</ui:insert>
             </div>
-        </div>
-        <div id="bottom">
-            <ui:insert name="bottom">rodapé</ui:insert>
         </div>
     </h:body>
 

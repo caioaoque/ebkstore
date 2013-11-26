@@ -1,4 +1,4 @@
-package br.mackenzie.pos.works.persistenceandclientserver.bean;
+package br.mackenzie.pos.works.persistenceandclientserver.bean.product;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;

@@ -8,6 +8,9 @@ import javax.ejb.Stateless;
 
 import br.mackenzie.pos.works.persistenceandclientserver.domain.product.Ebook;
 import br.mackenzie.pos.works.persistenceandclientserver.util.dto.EbookDTO;
+import java.util.ArrayList;
+import java.util.List;
+import javax.persistence.TypedQuery;
 
 @Stateless
 public class EbookService extends Service<Ebook, EbookDTO> {
@@ -28,6 +31,12 @@ public class EbookService extends Service<Ebook, EbookDTO> {
 //            sb.append(this.inCondition("authors", params.getAuthors()));
         }
         return sb.toString();
+    }
+
+    public List<String> findGenres() {
+        final TypedQuery<String> query = this.em.createQuery("SELECT DISTINCT %s.gender from %s", String.class);
+        final List<String> result = query.getResultList();
+        return result == null ? new ArrayList<String>() : result;
     }
 
 }

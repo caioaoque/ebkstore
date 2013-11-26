@@ -1,27 +1,25 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:f="http://java.sun.com/jsf/core">
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
 
     <h:body>
 
         <ui:composition template="../template/main.xhtml">
 
             <ui:define name="content">
-                <h:inputText value=""/>
-                <h:commandButton id="cmd-button"
-                                 action="#{ebookListMBean.find()}"
-                                 value="add to cart">
-                </h:commandButton>
-                asdsd
+                <h:panelGrid columns="3">
+                    <ui:repeat value="#{ebookListMBean.list}" var="_ebook">
+                        <h:column>
+                            <h:graphicImage url="http://freecomputerbooks.com/covers/AbscrtactBook.gif"
+                                            width="300" height="300"/>
+                            Título: <h:outputText value="#{_ebook.title}"/>
+                            Preço: <h:outputText value="#{_ebook.price}"/>
+                        </h:column>
+                    </ui:repeat>
+                </h:panelGrid>
             </ui:define>
-
-            <ui:define name="bottom">
-                bottom
-            </ui:define>
-
         </ui:composition>
 
     </h:body>
