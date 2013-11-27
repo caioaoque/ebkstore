@@ -28,17 +28,18 @@ public class Comment implements DomainEntity<Long> {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "usr_login")
+    @JoinColumn(name = "usr_id", nullable = false)
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "ebk_id")
+    @JoinColumn(name = "ebk_id", nullable = false)
     private Ebook ebook;
 
-    @Column(name = "cmt_text")
+    @Column(name = "cmt_text", nullable = false)
     private String text;
 
     @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "cmt_creation", insertable = false, updatable = false, columnDefinition = "TIMESTAMP default CURRENT_TIMESTAMP")
     private Date creation;
 
     @Override

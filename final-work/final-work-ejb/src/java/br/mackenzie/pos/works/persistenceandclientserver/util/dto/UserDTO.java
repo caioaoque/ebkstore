@@ -1,8 +1,8 @@
 package br.mackenzie.pos.works.persistenceandclientserver.util.dto;
 
-import br.mackenzie.pos.works.persistenceandclientserver.domain.management.Customer;
+import br.mackenzie.pos.works.persistenceandclientserver.domain.management.User;
 
-public class CustomerDTO implements DTO<Customer> {
+public class UserDTO implements DTO<User> {
 
     private String login;
 

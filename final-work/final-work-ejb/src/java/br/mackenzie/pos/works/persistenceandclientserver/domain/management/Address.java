@@ -9,13 +9,13 @@ public class Address implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @Column(name = "adr_line1")
+    @Column(name = "usr_address_line1", nullable = false)
     private String line1;
 
-    @Column(name = "adr_line2")
+    @Column(name = "usr_address_line2")
     private String line2;
 
-    @Column(name = "adr_zip_code")
+    @Column(name = "usr_address_zip_code", nullable = false)
     private String zipCode;
 
     public String getLine1() {

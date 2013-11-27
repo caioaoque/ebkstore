@@ -22,30 +22,37 @@
                 Descrição: <h:outputText value="#{ebookEditMBean.ebook.description}"/><br/>
 
                 <br/>
-                <h:button outcome="/product/list" value="Voltar"/>
-                <h:form>
-                    <h:commandButton action="#{cartMBean.addToCart(ebookEditMBean.ebook)}" value="Adicionar ao carrinho"/>
-                    <h:commandButton action="#{cartMBean.buy(ebookEditMBean.ebook)}" value="Comprar"/>
+                <h:form pt:role="form">
+                    <h:button outcome="/product/list" value="Voltar" styleClass="btn btn-default"/>
+                    <h:commandButton action="#{cartMBean.addToCart(ebookEditMBean.ebook)}" value="Adicionar ao carrinho"
+                                     style="margin-left: 4px" styleClass="btn btn-default"/>
+                    <h:commandButton action="#{cartMBean.buy(ebookEditMBean.ebook)}" value="Comprar"
+                                     style="margin-left: 4px" styleClass="btn btn-default"/>
                 </h:form>
                 <br/>
                 <h:form>
                     <h:panelGroup layout="block">
                         <c:if test="#{ebookEditMBean.ebook.comments ne null and ebookEditMBean.ebook.comments.size() gt 0}">
-                            <h2>Comentários</h2>
+                            <h3>Comentários</h3>
                             <ul>
-                                <ui:repeat value="#{ebookEditMBean.ebook.comments}" var="_comment">
+                                <c:forEach items="#{ebookEditMBean.ebook.comments}" var="_comment">
                                     <li>
                                         <h:outputText value="#{_comment.user.name}:"/>
                                         <h:outputText value="#{_comment.text}"/>
                                     </li>
-                                </ui:repeat>
+                                </c:forEach>
                             </ul>
                         </c:if>
                         <br/>
                         <c:choose>
                             <c:when test="#{userSessionMBean.logged}">
-                                Novo comentário: <h:inputTextarea value="#{ebookEditMBean.newComment}" required="true"/>
-                                <h:commandButton action="#{ebookEditMBean.addComment()}" >
+                                <h:panelGroup layout="block" styleClass="form-group">
+                                    <h:outputLabel for="txt-new-comment" value="Novo comentário:" style="width: 120px"/>
+                                    <h:inputTextarea id="txt-new-comment" value="#{ebookEditMBean.newComment}" pt:autocomplete="off"
+                                                     required="true" styleClass="required"/>
+                                </h:panelGroup>
+                                <h:commandButton action="#{ebookEditMBean.addComment()}" value="Adicionar comentário"
+                                                 styleClass="btn btn-default">
                                     <f:ajax execute="@form" render="@form"/>
                                 </h:commandButton>
                             </c:when>

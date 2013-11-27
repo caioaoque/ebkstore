@@ -1,8 +1,7 @@
 package br.mackenzie.pos.works.persistenceandclientserver.service;
 
-import br.mackenzie.pos.works.persistenceandclientserver.domain.management.Customer;
+import br.mackenzie.pos.works.persistenceandclientserver.domain.management.Address;
 import br.mackenzie.pos.works.persistenceandclientserver.domain.management.Role;
-import javax.ejb.Remove;
 import javax.ejb.Stateful;
 import javax.enterprise.context.SessionScoped;
 import javax.persistence.EntityManager;
@@ -21,15 +20,16 @@ public class UserSessionService {
     private EntityManager em;
     private User user;
 
-    public void login(final String login, final String encryptedPassword) {
+    public boolean login(final String login, final String encryptedPassword) {
         final TypedQuery<User> query = this.em.createQuery(QUERY_BASE + " WHERE u.login = :login AND u.encryptedPassword = :pass",
                 User.class);
         query.setParameter("login", login);
         query.setParameter("pass", encryptedPassword);
         try {
             this.user = query.getSingleResult();
+            return true;
         } catch (final Exception ex) {
-            throw new IllegalArgumentException("Invalid user or password.", ex);
+            return false;
         }
     }
 
@@ -56,14 +56,26 @@ public class UserSessionService {
         newUser.setEmail("iasdjoisjd@daspkds.com");
         newUser.setName("Administrator");
         newUser.setPhone("4768187644");
+        newUser.setRole(Role.ADMINISTRATOR);
+        Address address = new Address();
+        address.setLine1("rua A, 123");
+        address.setLine2("apartamento 10");
+        address.setZipCode("01111000");
+        newUser.setAddress(address);
         this.em.persist(newUser);
-        
-        Customer newCustomer = new Customer();
+
+        User newCustomer = new User();
         newCustomer.setLogin("customer");
         newCustomer.setEncryptedPassword("81DC9BDB52D04DC20036DBD8313ED055");
         newCustomer.setEmail("asdasdad@adssahd.com");
         newCustomer.setName("Customer");
         newCustomer.setPhone("123123123123");
+        newCustomer.setRole(Role.CUSTOMER);
+        Address customerAddress = new Address();
+        customerAddress.setLine1("rua B, 456");
+        customerAddress.setLine2("apartamento 37");
+        customerAddress.setZipCode("02222000");
+        newCustomer.setAddress(customerAddress);
         this.em.persist(newCustomer);
     }
 

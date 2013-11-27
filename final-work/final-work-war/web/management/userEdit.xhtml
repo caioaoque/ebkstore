@@ -1,0 +1,58 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <h:body>
+
+        <ui:composition template="/template/main.xhtml">
+            <ui:define name="content">
+                <h:form pt:role="form">
+                    <h:inputHidden value="#{userEditMBean.user.id}"/>
+                    <h:panelGroup layout="block" styleClass="form-group">
+                        <h:outputLabel for="txt-login" value="Login:" style="width: 120px"/>
+                        <h:inputText id="txt-login" value="#{userEditMBean.user.login}" pt:autocomplete="off"
+                                     required="true" styleClass="required"/>
+                    </h:panelGroup>
+                    <c:if test="#{userEditMBean.user.new}">
+                        <h:panelGroup layout="block" styleClass="form-group">
+                            <h:outputLabel for="txt-password" value="Senha:" style="width: 120px"/>
+                            <h:inputSecret id="txt-password" value="#{userEditMBean.password}" pt:autocomplete="off"
+                                           required="true" styleClass="required"/>
+                        </h:panelGroup>
+                    </c:if>
+                    <h:panelGroup layout="block" styleClass="form-group">
+                        <h:outputLabel for="txt-name" value="Nome:" style="width: 120px"/>
+                        <h:inputText id="txt-name" value="#{userEditMBean.user.name}" required="true" styleClass="required"/>
+                    </h:panelGroup>
+                    <h:panelGroup layout="block" styleClass="form-group">
+                        <h:outputLabel for="txt-email" value="E-mail:" style="width: 120px"/>
+                        <h:inputText id="txt-email" value="#{userEditMBean.user.email}" required="true" styleClass="required"/>
+                    </h:panelGroup>
+                    <h:panelGroup layout="block" styleClass="form-group">
+                        <h:outputLabel for="txt-phone" value="Telefone:" style="width: 120px"/>
+                        <h:inputText id="txt-phone" value="#{userEditMBean.user.phone}" required="true" styleClass="required"/>
+                    </h:panelGroup>
+                    <h:panelGroup layout="block" styleClass="form-group">
+                        <h:outputLabel for="txt-addressLine1" value="Endereço:" style="width: 120px"/>
+                        <h:inputText id="txt-addressLine1" value="#{userEditMBean.user.address.line1}" required="true" styleClass="required"/>
+                    </h:panelGroup>
+                    <h:panelGroup layout="block" styleClass="form-group">
+                        <h:outputLabel for="txt-addressLine2" value="Complemento:" style="width: 120px"/>
+                        <h:inputText id="txt-addressLine2" value="#{userEditMBean.user.address.line2}"/>
+                    </h:panelGroup>
+                    <h:panelGroup layout="block" styleClass="form-group">
+                        <h:outputLabel for="txt-addressZipCode" value="CEP:" style="width: 120px"/>
+                        <h:inputText id="txt-addressZipCode" value="#{userEditMBean.user.address.zipCode}" required="true" styleClass="required"/>
+                    </h:panelGroup>
+                    <h:commandButton value="Salvar" action="#{userEditMBean.save()}" styleClass="btn btn-default"/>
+                    <input type="reset" value="Limpar" class="btn btn-default"/>
+                    <h:button outcome="/management/userList" value="Voltar" styleClass="btn btn-default" style="margin-left: 4px"/>
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>

@@ -18,9 +18,6 @@ import javax.persistence.TypedQuery;
 @Stateless
 public class EbookService extends Service<Ebook, EbookDTO> {
 
-    @Inject
-    private UserSessionService sessionService;
-
     public EbookService() {
         super(Ebook.class, "ebook");
     }
@@ -40,20 +37,22 @@ public class EbookService extends Service<Ebook, EbookDTO> {
     }
 
     public List<String> findGenres() {
-        final String queryStr = String.format("SELECT DISTINCT %s.genre from %s %s", alias, Ebook.class.getName(), alias);
+        final String queryStr = String.format("SELECT DISTINCT %s.genre from %s %s order by %s.genre", alias, Ebook.class.getName(), alias, alias);
         final TypedQuery<String> query = this.em.createQuery(queryStr, String.class);
         final List<String> result = query.getResultList();
         return result == null ? new ArrayList<String>() : result;
     }
 
-    public void addComment(String newComment) {
-        final User user = sessionService.getUser();
+    public Comment addComment(User user, Ebook ebook, String newComment) {
         if (user != null && !user.isNew() && newComment != null && !newComment.isEmpty()) {
             Comment comment = new Comment();
+            comment.setEbook(ebook);
             comment.setUser(user);
             comment.setText(newComment);
             this.em.persist(comment);
+            return comment;
         }
+        return null;
     }
 
 }

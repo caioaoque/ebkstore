@@ -1,6 +1,6 @@
 package br.mackenzie.pos.works.persistenceandclientserver.domain.order;
 
-import br.mackenzie.pos.works.persistenceandclientserver.domain.management.Customer;
+import br.mackenzie.pos.works.persistenceandclientserver.domain.management.User;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -20,52 +20,56 @@ import javax.persistence.TemporalType;
 
 import br.mackenzie.pos.works.persistenceandclientserver.domain.product.Ebook;
 import br.mackenzie.pos.works.persistenceandclientserver.domain.util.DomainEntity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.ManyToOne;
 
 @Entity
 @Table(name = "orders")
-public class Order implements DomainEntity<String> {
+public class Order implements DomainEntity<Long> {
 
     private static final long serialVersionUID = 1L;
 
     @Id
-    @Column(name = "ord_code")
-    private String code;
+    @Column(name = "ord_id")
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "usr_login")
-    private Customer customer;
+    @JoinColumn(name = "usr_id")
+    private User user;
 
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "ord_creation", insertable = false, updatable = false)
+    @Column(name = "ord_creation", insertable = false, updatable = false, columnDefinition = "TIMESTAMP default CURRENT_TIMESTAMP")
     private Date creation;
 
     @Column(name = "ord_status", nullable = false)
     @Enumerated(EnumType.STRING)
-    private OrderStatus currentStatus;
+    private OrderStatus currentStatus = OrderStatus.OPENED;
 
     @ManyToMany
-    @Basic(optional = false)
-    @JoinTable(name = "order_ebooks", joinColumns = @JoinColumn(name = "ord_code"), inverseJoinColumns = @JoinColumn(name = "ebk_id"))
+    @JoinTable(name = "order_ebooks", joinColumns = @JoinColumn(name = "ord_id", referencedColumnName = "ord_id"),
+            inverseJoinColumns = @JoinColumn(name = "ebk_id", referencedColumnName = "ebk_id"))
     private final List<Ebook> ebooks = new ArrayList<>();
 
 //    Commented to reduce the complexity of ORM.
 //    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
 //    private final List<OrderHistory> history;
-    public String getCode() {
-        return this.code;
+    @Override
+    public Long getId() {
+        return this.id;
     }
 
-    public void setCode(final String code) {
-        this.code = code;
+    public void setId(final Long id) {
+        this.id = id;
     }
 
-    public Customer getCustomer() {
-        return customer;
+    public User getUser() {
+        return user;
     }
 
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public Date getCreation() {
@@ -112,12 +116,7 @@ public class Order implements DomainEntity<String> {
 //    }
     @Override
     public boolean isNew() {
-        return this.code != null && !this.code.isEmpty();
-    }
-
-    @Override
-    public String getId() {
-        return this.code;
+        return this.id == null || this.id.equals(0L);
     }
 
 }

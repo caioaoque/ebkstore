@@ -2,16 +2,19 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:h="http://xmlns.jcp.org/jsf/html">
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
 
     <h:body>
 
         <ui:composition template="/template/main.xhtml">
             <ui:define name="content">
                 Ebook store Home page.
-                <h:form>
-                    <h:commandButton value="inserir usuários" action="#{userSessionMBean.insert()}"/>
-                </h:form>
+                <c:if test="#{userListMBean.countUsers == 0}">
+                    <h:form>
+                        <h:commandButton value="inserir usuários" action="#{userSessionMBean.insert()}"/>
+                    </h:form>
+                </c:if>
             </ui:define>
         </ui:composition>
     </h:body>

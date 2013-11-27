@@ -1,0 +1,65 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <h:body>
+
+        <ui:composition template="/template/main.xhtml">
+            <ui:define name="content">
+                <h:form pt:role="form" enctype="multipart/form-data" acceptcharset="ISO-8859-1">
+                    <h:inputHidden value="#{ebookEditMBean.ebook.id}"/>
+                    <h:panelGroup layout="block" styleClass="form-group">
+                        <h:outputLabel for="txt-title" value="Título:" style="width: 120px"/>
+                        <h:inputText id="txt-title" value="#{ebookEditMBean.ebook.title}"
+                                     required="true" styleClass="required"/>
+                    </h:panelGroup>
+                    <h:panelGroup layout="block" styleClass="form-group">
+                        <h:outputLabel for="txt-author" value="Autor:" style="width: 120px"/>
+                        <h:inputText id="txt-author" value="#{ebookEditMBean.ebook.author}" required="true" styleClass="required"/>
+                    </h:panelGroup>
+                    <h:panelGroup layout="block" styleClass="form-group">
+                        <h:outputLabel for="txt-genre" value="Categoria:" style="width: 120px"/>
+                        <h:inputText id="txt-genre" value="#{ebookEditMBean.ebook.genre}" required="true" styleClass="required"/>
+                    </h:panelGroup>
+                    <h:panelGroup layout="block" styleClass="form-group">
+                        <h:outputLabel for="txt-language" value="Idioma:" style="width: 120px"/>
+                        <h:inputText id="txt-language" value="#{ebookEditMBean.ebook.language}" required="true" styleClass="required"/>
+                    </h:panelGroup>
+                    <h:panelGroup layout="block" styleClass="form-group">
+                        <h:outputLabel for="txt-description" value="Descrição:" style="width: 120px"/>
+                        <h:inputTextarea id="txt-description" value="#{ebookEditMBean.ebook.description}" required="true" styleClass="required"/>
+                    </h:panelGroup>
+                    <h:panelGroup layout="block" styleClass="form-group">
+                        <h:outputLabel for="txt-pages" value="Páginas:" style="width: 120px"/>
+                        <h:inputText id="txt-pages" value="#{ebookEditMBean.ebook.pages}" required="true" styleClass="required"/>
+                    </h:panelGroup>
+                    <h:panelGroup layout="block" styleClass="form-group">
+                        <h:outputLabel for="txt-publisher" value="Editora:" style="width: 120px"/>
+                        <h:inputText id="txt-publisher" value="#{ebookEditMBean.ebook.publisher}" required="true" styleClass="required"/>
+                    </h:panelGroup>
+                    <h:panelGroup layout="block" styleClass="form-group">
+                        <h:outputLabel for="txt-price" value="Preço:" style="width: 120px"/>
+                        <h:inputText id="txt-price" value="#{ebookEditMBean.ebook.price}" required="true" styleClass="required"/>
+                    </h:panelGroup>
+                    <h:panelGroup layout="block" styleClass="form-group">
+                        <h:outputLabel for="txt-content" value="Arquivo para download:" style="width: 120px"/>
+                        <h:inputFile id="txt-content" value="#{ebookEditMBean.content}"
+                                     required="#{ebookEditMBean.ebook.new}"
+                                     styleClass="#{ebookEditMBean.ebook.new ? 'required' : ''}"/>
+                    </h:panelGroup>
+                    <h:panelGroup layout="block" styleClass="form-group">
+                        <h:outputLabel for="txt-cover" value="Capa:" style="width: 120px"/>
+                        <h:inputFile id="txt-cover" value="#{ebookEditMBean.cover}"/>
+                    </h:panelGroup>
+                    <h:commandButton value="Salvar" action="#{ebookEditMBean.save()}" styleClass="btn btn-default"/>
+                    <input type="reset" value="Limpar" class="btn btn-default"/>
+                    <h:button outcome="/product/list" value="Voltar" styleClass="btn btn-default" style="margin-left: 4px"/>
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>

@@ -1,28 +1,38 @@
 package br.mackenzie.pos.works.persistenceandclientserver.domain.management;
 
+import br.mackenzie.pos.works.persistenceandclientserver.domain.order.Order;
+import br.mackenzie.pos.works.persistenceandclientserver.domain.order.OrderStatus;
 import br.mackenzie.pos.works.persistenceandclientserver.domain.product.Comment;
+import br.mackenzie.pos.works.persistenceandclientserver.domain.product.Ebook;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
 import javax.persistence.Table;
 
 import br.mackenzie.pos.works.persistenceandclientserver.domain.util.DomainEntity;
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
+import javax.persistence.Embedded;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.OneToMany;
+import javax.persistence.Transient;
 
 @Entity
 @Table(name = "users")
-@Inheritance(strategy = InheritanceType.JOINED)
-public class User implements DomainEntity<String> {
+public class User implements DomainEntity<Long> {
 
     private static final long serialVersionUID = 1L;
 
     @Id
+    @Column(name = "usr_id")
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+
     @Column(name = "usr_login")
     private String login;
 
@@ -40,17 +50,31 @@ public class User implements DomainEntity<String> {
 
     @Column(name = "usr_role", nullable = false)
     @Enumerated(EnumType.STRING)
-    private final Role role;
+    private Role role;
+
+    @Embedded
+    private Address address = new Address();
 
     @OneToMany(mappedBy = "user")
     private final List<Comment> comments = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user")
+    private final List<Order> orders = new ArrayList<>();
+
+    @Transient
+    private final Set<Ebook> ebooks = new LinkedHashSet<>();
 
     public User() {
         this.role = Role.ADMINISTRATOR;
     }
 
-    protected User(final Role role) {
-        this.role = role;
+    @Override
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getLogin() {
@@ -97,6 +121,18 @@ public class User implements DomainEntity<String> {
         return this.role;
     }
 
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
+    }
+
     public List<Comment> getComments() {
         return comments;
     }
@@ -106,6 +142,26 @@ public class User implements DomainEntity<String> {
         if (comments != null) {
             this.comments.addAll(comments);
         }
+    }
+
+    public List<Order> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(List<Order> orders) {
+        this.orders.clear();
+        if (orders != null) {
+            this.orders.addAll(orders);
+        }
+    }
+
+    public Set<Ebook> getEbooks() {
+        for (Order order : orders) {
+            if (OrderStatus.PAID.equals(order.getCurrentStatus())) {
+                ebooks.addAll(order.getEbooks());
+            }
+        }
+        return ebooks;
     }
 
     @Override
@@ -140,12 +196,7 @@ public class User implements DomainEntity<String> {
 
     @Override
     public boolean isNew() {
-        return this.login != null && !this.login.isEmpty();
-    }
-
-    @Override
-    public String getId() {
-        return this.login;
+        return this.id == null || this.id.equals(0L);
     }
 
 }

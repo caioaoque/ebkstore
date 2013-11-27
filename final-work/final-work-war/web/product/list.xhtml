@@ -2,7 +2,9 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:h="http://xmlns.jcp.org/jsf/html">
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
 
     <h:body>
 
@@ -10,15 +12,46 @@
 
             <ui:define name="content">
                 <h:form id="listForm">
-                    <ui:repeat value="#{ebookListMBean.list}" var="_ebook">
-                        <h:commandLink action="#{ebookEditMBean.show(_ebook.id)}">
+                    <h:dataTable value="#{ebookListMBean.list}" var="_ebook" styleClass="table table-striped table-hover">
+                        <h:column>
+                            <f:facet name="header">
+                                Capa
+                            </f:facet>
                             <h:graphicImage url="http://freecomputerbooks.com/covers/AbscrtactBook.gif"
-                                            width="150" height="150" /><br/>
-                            Título: <h:outputText value="#{_ebook.title}"/><br/>
-                            Preço: <h:outputText value="#{_ebook.price}"/>
-                        </h:commandLink>
-                        <br/><br/><br/>
-                    </ui:repeat>
+                                            width="50" height="50" />
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                Título
+                            </f:facet>
+                            <h:outputText value="#{_ebook.title}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                Preço
+                            </f:facet>
+                            <h:outputText value="#{_ebook.price}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                Ações
+                            </f:facet>
+                            <h:commandButton action="#{ebookEditMBean.show(_ebook.id)}" value="Detalhes" styleClass="btn btn-default"/>
+                            <h:commandButton action="#{cartMBean.addToCart(_ebook)}" value="Adicionar ao carrinho"
+                                             styleClass="btn btn-default" style="margin-left: 5px"/>
+                            <h:commandButton action="#{cartMBean.buy(_ebook)}" value="Comprar"
+                                             styleClass="btn btn-default" style="margin-left: 5px"/>
+                            <c:if test="#{userSessionMBean.logged and userSessionMBean.hasRole('ADMINISTRATOR')}">
+                                <h:commandButton action="#{ebookEditMBean.edit(_ebook.id)}" value="Editar"
+                                                 styleClass="btn btn-default" style="margin-left: 5px"/>
+                                <h:commandButton action="#{ebookEditMBean.remove(_ebook.id)}" value="Remover"
+                                                 styleClass="btn btn-default" style="margin-left: 5px"/>
+                            </c:if>
+                        </h:column>
+                    </h:dataTable>
+                    <c:if test="#{userSessionMBean.logged and userSessionMBean.hasRole('ADMINISTRATOR')}">
+                        <h:commandButton value="Novo ebook" action="#{ebookEditMBean.newEbook()}" styleClass="btn btn-default"/>
+                    </c:if>
                 </h:form>
             </ui:define>
         </ui:composition>

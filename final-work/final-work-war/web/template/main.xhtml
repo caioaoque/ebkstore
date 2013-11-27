@@ -27,16 +27,18 @@
                 </div>
 
                 <!-- Collect the nav links, forms, and other content for toggling -->
-                <h:panelGroup id="bs-example-navbar-collapse-1" styleClass="collapse navbar-collapse" layout="block"
-                              rendered="#{!userSessionMBean.logged or userSessionMBean.hasRole('CUSTOMER')}">
+                <h:panelGroup id="bs-example-navbar-collapse-1" styleClass="collapse navbar-collapse" layout="block">
                     <h:form>
                         <ul class="nav navbar-nav">
+                            <c:if test="#{userSessionMBean.logged and userSessionMBean.hasRole('ADMINISTRATOR')}">
+                                <li><h:commandLink action="#{userListMBean.findAll()}" value="Usuários"/></li>
+                            </c:if>
                             <li><h:commandLink action="#{ebookListMBean.findAll()}" value="Ebooks"/></li>
                             <li class="dropdown"><a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown">Categorias <b class="caret"></b></a>
                                 <ul class="dropdown-menu">
-                                    <ui:repeat value="#{ebookListMBean.findGenres()}" var="_genre">
+                                    <c:forEach items="#{ebookListMBean.findGenres()}" var="_genre">
                                         <li><h:commandLink value="#{_genre}" action="#{ebookListMBean.findByGenre(_genre)}"/></li>
-                                    </ui:repeat>
+                                    </c:forEach>
                                 </ul>
                             </li>
                         </ul>
@@ -53,35 +55,36 @@
                     <ul class="nav navbar-nav navbar-right">
                         <c:choose>
                             <c:when test="#{!userSessionMBean.logged}">
-                                <li><h:link outcome="/login" value="login"/></li>
+                                <li><h:link outcome="/login" value="Login"/></li>
                             </c:when>
                             <c:otherwise>
                                 <li class="dropdown">
                                     <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown">
                                         #{userSessionMBean.login}
+                                        <b class="caret"></b>
                                     </a>
 
                                     <ul class="dropdown-menu">
                                         <li><a href="javascript:void(0)">Pedidos</a></li>
-                                        <li class="divider"></li>
-                                        <li>
-                                            <h:form>
-                                                <h:commandLink value="logout" action="#{userSessionMBean.logout()}"/>
-                                            </h:form>
-                                        </li>
+                                        <li><a href="javascript:void(0)" onclick="$('.user-logout').trigger('click')">Logout</a></li>
                                     </ul>
-                                </li>
-                                <li>
-                                    <h:link outcome="/order/new">
-                                        <span class="glyphicon glyphicon-shopping-cart">
-                                        </span>
-                                        <span class="badge">
-                                            <h:outputText id="cart-badge" value="#{cartMBean.cartSize}"/>
-                                        </span>
-                                    </h:link>
+                                    <h:form style="display: none">
+                                        <h:commandLink styleClass="user-logout"
+                                                       value="Logout"
+                                                       action="#{userSessionMBean.logout()}"/>
+                                    </h:form>
                                 </li>
                             </c:otherwise>
                         </c:choose>
+                        <li>
+                            <h:link outcome="/order/new">
+                                <span class="glyphicon glyphicon-shopping-cart">
+                                </span>
+                                <span class="badge">
+                                    <h:outputText id="cart-badge" value="#{cartMBean.cartSize}"/>
+                                </span>
+                            </h:link>
+                        </li>
 
                     </ul>
                 </h:panelGroup>
@@ -90,6 +93,7 @@
 
         <div>
             <div id="content" class="content" style="padding-left: 30px">
+                <h:messages/>
                 <ui:insert name="content">conteúdo</ui:insert>
             </div>
         </div>

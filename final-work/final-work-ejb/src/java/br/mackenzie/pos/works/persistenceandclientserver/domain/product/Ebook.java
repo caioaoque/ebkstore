@@ -23,21 +23,21 @@ public class Ebook implements DomainEntity<Long> {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "ebk_id")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @Column(name = "ebk_title")
     private String title;
 
     @Column(name = "pages")
-    private int pages;
+    private Integer pages;
 
     @Column(name = "ebk_desc")
     private String description;
 
     @Column(name = "ebk_price")
-    private double price;
+    private Double price;
 
 //    Commented to reduce the complexity of the ORM.
 //    @ElementCollection
@@ -88,11 +88,11 @@ public class Ebook implements DomainEntity<Long> {
         this.title = title;
     }
 
-    public int getPages() {
+    public Integer getPages() {
         return this.pages;
     }
 
-    public void setPages(final int pages) {
+    public void setPages(final Integer pages) {
         this.pages = pages;
     }
 
@@ -104,11 +104,11 @@ public class Ebook implements DomainEntity<Long> {
         this.description = description;
     }
 
-    public double getPrice() {
+    public Double getPrice() {
         return this.price;
     }
 
-    public void setPrice(final double price) {
+    public void setPrice(final Double price) {
         this.price = price;
     }
 
@@ -214,6 +214,6 @@ public class Ebook implements DomainEntity<Long> {
 
     @Override
     public boolean isNew() {
-        return this.id != null && !this.id.equals(0L);
+        return this.id == null || this.id.equals(0L);
     }
 }

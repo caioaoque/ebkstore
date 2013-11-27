@@ -7,10 +7,14 @@ import java.io.Serializable;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 
 @SessionScoped
 @Named(value = "userSessionMBean")
 public class UserSessionMBean implements Serializable {
+
+    private static final String HOME = "/home";
 
     @EJB
     private UserSessionService service;
@@ -45,22 +49,31 @@ public class UserSessionMBean implements Serializable {
         return this.service.isLogged();
     }
 
+    public UserSessionService getService() {
+        return service;
+    }
+
     public String login() {
         try {
-            this.service.login(this.login, Encryptor.encrypt(password));
-            return "home";
+            if (this.service.login(this.login, Encryptor.encrypt(password))) {
+                return HOME;
+            } else {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Nome de usuário ou senha inválido."));
+                return null;
+            }
         } finally {
             this.password = null;
         }
     }
-    
+
     public String logout() {
         this.login = null;
         this.password = null;
         this.service.logout();
-        return "home";
+        FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
+        return HOME;
     }
-    
+
     public void insert() {
         this.service.insert();
     }

@@ -41,6 +41,7 @@ public abstract class Service<E extends DomainEntity<?>, T extends DTO<E>> {
 
     // Methods used to query for T Objects
     public synchronized List<E> find(final T params) {
+        this.em.clear();
         this.reset(params);
         return this.getQuery().getResultList();
     }

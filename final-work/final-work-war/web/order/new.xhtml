@@ -3,39 +3,44 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
 
     <h:body>
 
         <ui:composition template="/template/main.xhtml">
             <ui:define name="content">
-                <h:dataTable value="#{cartMBean.cartItems}" var="_item">
+                <h:dataTable value="#{cartMBean.cartItems}" var="_item" styleClass="table table-striped table-hover">
                     <h:column>
                         <f:facet name="header">
                             <h:outputText value="Título"/>
                         </f:facet>
-                        <h:outputText value="#{_item.key.title}"/>
+                        <h:outputText value="#{_item.title}"/>
                     </h:column>
                     <h:column>
                         <f:facet name="header">
                             <h:outputText value="Preço"/>
                         </f:facet>
-                        <h:outputText value="#{_item.key.price}"/>
+                        <h:outputText value="#{_item.price}"/>
                     </h:column>
-                    <h:column>
-                        <f:facet name="header">
-                            <h:outputText value="Quantidade"/>
-                        </f:facet>
-                        <h:outputText value="#{_item.value}"/>
-                    </h:column>
-                    <h:column>
-                        <f:facet name="header">
-                            <h:outputText value="Sub-total"/>
-                        </f:facet>
-                        <h:outputText value="#{_item.key.price * _item.value}"/>
-                    </h:column>
+                    <f:facet name="footer">
+                        Total: <h:outputText value="#{cartMBean.total}"/>
+                    </f:facet>
                 </h:dataTable>
-
+                <h:form>
+                    <c:choose>
+                        <c:when test="#{userSessionMBean.logged}">
+                            <c:if test="#{cartMBean.cartSize gt 0}">
+                                <h:commandButton action="#{cartMBean.saveOrder()}" value="Concluir compra"
+                                                 styleClass="btn btn-default"/>
+                            </c:if>
+                        </c:when>
+                        <c:otherwise>
+                            <h:button outcome="/login" styleClass="btn btn-default"
+                                      value="Faça o login para concluir a compra"/>
+                        </c:otherwise>
+                    </c:choose>
+                </h:form>
             </ui:define>
         </ui:composition>
     </h:body>
