@@ -1,6 +1,7 @@
 package br.mackenzie.pos.works.persistenceandclientserver.service;
 
 import br.mackenzie.pos.works.persistenceandclientserver.domain.product.Ebook;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import javax.ejb.Stateful;
@@ -43,5 +44,9 @@ public class CartService {
 
     public int getCartSize() {
         return this.cart.size();
+    }
+
+    public Map<Ebook, Integer> getCart() {
+        return Collections.unmodifiableMap(cart);
     }
 }

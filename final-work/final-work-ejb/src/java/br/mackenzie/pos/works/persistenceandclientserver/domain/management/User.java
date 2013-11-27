@@ -1,5 +1,6 @@
 package br.mackenzie.pos.works.persistenceandclientserver.domain.management;
 
+import br.mackenzie.pos.works.persistenceandclientserver.domain.product.Comment;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -10,6 +11,9 @@ import javax.persistence.InheritanceType;
 import javax.persistence.Table;
 
 import br.mackenzie.pos.works.persistenceandclientserver.domain.util.DomainEntity;
+import java.util.ArrayList;
+import java.util.List;
+import javax.persistence.OneToMany;
 
 @Entity
 @Table(name = "users")
@@ -37,6 +41,9 @@ public class User implements DomainEntity<String> {
     @Column(name = "usr_role", nullable = false)
     @Enumerated(EnumType.STRING)
     private final Role role;
+
+    @OneToMany(mappedBy = "user")
+    private final List<Comment> comments = new ArrayList<>();
 
     public User() {
         this.role = Role.ADMINISTRATOR;
@@ -88,6 +95,17 @@ public class User implements DomainEntity<String> {
 
     public Role getRole() {
         return this.role;
+    }
+
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments.clear();
+        if (comments != null) {
+            this.comments.addAll(comments);
+        }
     }
 
     @Override

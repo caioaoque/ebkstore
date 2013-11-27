@@ -137,4 +137,7 @@ public abstract class Service<E extends DomainEntity<?>, T extends DTO<E>> {
         }
     }
 
+    public E findById(Object id) {
+        return this.em.find(this.type, id);
+    }
 }

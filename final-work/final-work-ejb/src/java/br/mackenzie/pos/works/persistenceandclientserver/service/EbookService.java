@@ -4,16 +4,22 @@
  */
 package br.mackenzie.pos.works.persistenceandclientserver.service;
 
+import br.mackenzie.pos.works.persistenceandclientserver.domain.management.User;
+import br.mackenzie.pos.works.persistenceandclientserver.domain.product.Comment;
 import javax.ejb.Stateless;
 
 import br.mackenzie.pos.works.persistenceandclientserver.domain.product.Ebook;
 import br.mackenzie.pos.works.persistenceandclientserver.util.dto.EbookDTO;
 import java.util.ArrayList;
 import java.util.List;
+import javax.inject.Inject;
 import javax.persistence.TypedQuery;
 
 @Stateless
 public class EbookService extends Service<Ebook, EbookDTO> {
+
+    @Inject
+    private UserSessionService sessionService;
 
     public EbookService() {
         super(Ebook.class, "ebook");
@@ -34,9 +40,20 @@ public class EbookService extends Service<Ebook, EbookDTO> {
     }
 
     public List<String> findGenres() {
-        final TypedQuery<String> query = this.em.createQuery("SELECT DISTINCT %s.gender from %s", String.class);
+        final String queryStr = String.format("SELECT DISTINCT %s.genre from %s %s", alias, Ebook.class.getName(), alias);
+        final TypedQuery<String> query = this.em.createQuery(queryStr, String.class);
         final List<String> result = query.getResultList();
         return result == null ? new ArrayList<String>() : result;
+    }
+
+    public void addComment(String newComment) {
+        final User user = sessionService.getUser();
+        if (user != null && !user.isNew() && newComment != null && !newComment.isEmpty()) {
+            Comment comment = new Comment();
+            comment.setUser(user);
+            comment.setText(newComment);
+            this.em.persist(comment);
+        }
     }
 
 }

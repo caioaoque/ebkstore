@@ -1,5 +1,6 @@
 package br.mackenzie.pos.works.persistenceandclientserver.service;
 
+import br.mackenzie.pos.works.persistenceandclientserver.domain.management.Customer;
 import br.mackenzie.pos.works.persistenceandclientserver.domain.management.Role;
 import javax.ejb.Remove;
 import javax.ejb.Stateful;
@@ -21,7 +22,7 @@ public class UserSessionService {
     private User user;
 
     public void login(final String login, final String encryptedPassword) {
-        final TypedQuery<User> query = this.em.createQuery(QUERY_BASE + " WHERE u.login = :login AND u.encryptedPasssword = :pass",
+        final TypedQuery<User> query = this.em.createQuery(QUERY_BASE + " WHERE u.login = :login AND u.encryptedPassword = :pass",
                 User.class);
         query.setParameter("login", login);
         query.setParameter("pass", encryptedPassword);
@@ -36,7 +37,6 @@ public class UserSessionService {
         return this.user;
     }
 
-    @Remove
     public void logout() {
         this.user = null;
     }
@@ -47,6 +47,24 @@ public class UserSessionService {
 
     public boolean isLogged() {
         return this.user != null;
+    }
+
+    public void insert() {
+        User newUser = new User();
+        newUser.setLogin("admin");
+        newUser.setEncryptedPassword("21232F297A57A5A743894A0E4A801FC3");
+        newUser.setEmail("iasdjoisjd@daspkds.com");
+        newUser.setName("Administrator");
+        newUser.setPhone("4768187644");
+        this.em.persist(newUser);
+        
+        Customer newCustomer = new Customer();
+        newCustomer.setLogin("customer");
+        newCustomer.setEncryptedPassword("81DC9BDB52D04DC20036DBD8313ED055");
+        newCustomer.setEmail("asdasdad@adssahd.com");
+        newCustomer.setName("Customer");
+        newCustomer.setPhone("123123123123");
+        this.em.persist(newCustomer);
     }
 
 }

@@ -27,9 +27,6 @@ public class Customer extends User {
     private Address address;
 
     @OneToMany(mappedBy = "customer")
-    private final List<Comment> comments = new ArrayList<>();
-
-    @OneToMany(mappedBy = "customer")
     private final List<Order> orders = new ArrayList<>();
 
     @Transient
@@ -45,17 +42,6 @@ public class Customer extends User {
 
     public void setAddress(Address address) {
         this.address = address;
-    }
-
-    public List<Comment> getComments() {
-        return comments;
-    }
-
-    public void setComments(List<Comment> comments) {
-        this.comments.clear();
-        if (comments != null) {
-            this.comments.addAll(comments);
-        }
     }
 
     public List<Order> getOrders() {

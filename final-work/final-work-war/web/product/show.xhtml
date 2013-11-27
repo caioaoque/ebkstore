@@ -1,14 +1,61 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html">
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
 
     <h:body>
 
-        <h:graphicImage url="http://freecomputerbooks.com/covers/AbscrtactBook.gif"
-                        width="300" height="300"/>
-        Título: <h:outputText value="#{_ebook.title}"/>
-        Preço: <h:outputText value="#{_ebook.price}"/>
-        Descrição: <h:outputText value="#"
+        <ui:composition template="/template/main.xhtml">
+
+            <ui:define name="content">
+                <h:graphicImage url="http://freecomputerbooks.com/covers/AbscrtactBook.gif"
+                                width="150" height="150"/><br/>
+                Título: <h:outputText value="#{ebookEditMBean.ebook.title}"/><br/>
+                Categoria: <h:outputText value="#{ebookEditMBean.ebook.genre}"/><br/>
+                Idioma: <h:outputText value="#{ebookEditMBean.ebook.language}"/><br/>
+                Editora: <h:outputText value="#{ebookEditMBean.ebook.publisher}"/><br/>
+                Preço: <h:outputText value="#{ebookEditMBean.ebook.price}"/><br/>
+                Descrição: <h:outputText value="#{ebookEditMBean.ebook.description}"/><br/>
+
+                <br/>
+                <h:button outcome="/product/list" value="Voltar"/>
+                <h:form>
+                    <h:commandButton action="#{cartMBean.addToCart(ebookEditMBean.ebook)}" value="Adicionar ao carrinho"/>
+                    <h:commandButton action="#{cartMBean.buy(ebookEditMBean.ebook)}" value="Comprar"/>
+                </h:form>
+                <br/>
+                <h:form>
+                    <h:panelGroup layout="block">
+                        <c:if test="#{ebookEditMBean.ebook.comments ne null and ebookEditMBean.ebook.comments.size() gt 0}">
+                            <h2>Comentários</h2>
+                            <ul>
+                                <ui:repeat value="#{ebookEditMBean.ebook.comments}" var="_comment">
+                                    <li>
+                                        <h:outputText value="#{_comment.user.name}:"/>
+                                        <h:outputText value="#{_comment.text}"/>
+                                    </li>
+                                </ui:repeat>
+                            </ul>
+                        </c:if>
+                        <br/>
+                        <c:choose>
+                            <c:when test="#{userSessionMBean.logged}">
+                                Novo comentário: <h:inputTextarea value="#{ebookEditMBean.newComment}" required="true"/>
+                                <h:commandButton action="#{ebookEditMBean.addComment()}" >
+                                    <f:ajax execute="@form" render="@form"/>
+                                </h:commandButton>
+                            </c:when>
+                            <c:otherwise>
+                                Inicie a sessão para inserir um comentário.
+                            </c:otherwise>
+                        </c:choose>
+                    </h:panelGroup>
+                </h:form>
+            </ui:define>
+        </ui:composition>
     </h:body>
 </html>

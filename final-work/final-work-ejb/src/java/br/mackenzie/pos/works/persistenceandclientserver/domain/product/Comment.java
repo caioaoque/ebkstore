@@ -13,8 +13,9 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import br.mackenzie.pos.works.persistenceandclientserver.domain.management.Customer;
+import br.mackenzie.pos.works.persistenceandclientserver.domain.management.User;
 import br.mackenzie.pos.works.persistenceandclientserver.domain.util.DomainEntity;
+import java.util.Objects;
 
 @Entity
 @Table(name = "comments")
@@ -28,7 +29,7 @@ public class Comment implements DomainEntity<Long> {
 
     @ManyToOne
     @JoinColumn(name = "usr_login")
-    private Customer customer;
+    private User user;
 
     @ManyToOne
     @JoinColumn(name = "ebk_id")
@@ -49,12 +50,12 @@ public class Comment implements DomainEntity<Long> {
         this.id = id;
     }
 
-    public Customer getCustomer() {
-        return this.customer;
+    public User getUser() {
+        return this.user;
     }
 
-    public void setCustomer(final Customer customer) {
-        this.customer = customer;
+    public void setUser(final User user) {
+        this.user = user;
     }
 
     public Ebook getEbook() {
@@ -79,6 +80,25 @@ public class Comment implements DomainEntity<Long> {
 
     public void setCreation(final Date creation) {
         this.creation = creation;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 97 * hash + Objects.hashCode(this.id);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Comment other = (Comment) obj;
+        return Objects.equals(this.id, other.id);
     }
 
     @Override

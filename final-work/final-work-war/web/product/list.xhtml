@@ -6,19 +6,20 @@
 
     <h:body>
 
-        <ui:composition template="../template/main.xhtml">
+        <ui:composition template="/template/main.xhtml">
 
             <ui:define name="content">
-                <h:panelGrid columns="3">
+                <h:form id="listForm">
                     <ui:repeat value="#{ebookListMBean.list}" var="_ebook">
-                        <h:column>
+                        <h:commandLink action="#{ebookEditMBean.show(_ebook.id)}">
                             <h:graphicImage url="http://freecomputerbooks.com/covers/AbscrtactBook.gif"
-                                            width="300" height="300"/>
-                            Título: <h:outputText value="#{_ebook.title}"/>
+                                            width="150" height="150" /><br/>
+                            Título: <h:outputText value="#{_ebook.title}"/><br/>
                             Preço: <h:outputText value="#{_ebook.price}"/>
-                        </h:column>
+                        </h:commandLink>
+                        <br/><br/><br/>
                     </ui:repeat>
-                </h:panelGrid>
+                </h:form>
             </ui:define>
         </ui:composition>
 
