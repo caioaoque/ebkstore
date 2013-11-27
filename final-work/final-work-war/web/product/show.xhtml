@@ -12,7 +12,7 @@
         <ui:composition template="/template/main.xhtml">
 
             <ui:define name="content">
-                <h:graphicImage url="http://freecomputerbooks.com/covers/AbscrtactBook.gif"
+                <h:graphicImage name="#{imagesMBean.showImage(ebookEditMBean.ebook.id)}"
                                 width="150" height="150"/><br/>
                 Título: <h:outputText value="#{ebookEditMBean.ebook.title}"/><br/>
                 Categoria: <h:outputText value="#{ebookEditMBean.ebook.genre}"/><br/>

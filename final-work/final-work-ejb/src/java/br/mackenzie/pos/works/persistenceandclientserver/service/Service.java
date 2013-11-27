@@ -1,6 +1,5 @@
 package br.mackenzie.pos.works.persistenceandclientserver.service;
 
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -41,7 +40,6 @@ public abstract class Service<E extends DomainEntity<?>, T extends DTO<E>> {
 
     // Methods used to query for T Objects
     public synchronized List<E> find(final T params) {
-        this.em.clear();
         this.reset(params);
         return this.getQuery().getResultList();
     }
@@ -139,6 +137,7 @@ public abstract class Service<E extends DomainEntity<?>, T extends DTO<E>> {
     }
 
     public E findById(Object id) {
-        return this.em.find(this.type, id);
+        final E entity = this.em.find(this.type, id);
+        return entity;
     }
 }

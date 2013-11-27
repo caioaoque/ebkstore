@@ -13,10 +13,12 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import br.mackenzie.pos.works.persistenceandclientserver.domain.util.DomainEntity;
+import javax.persistence.Cacheable;
 import javax.persistence.FetchType;
 import javax.persistence.Lob;
 
 @Entity
+@Cacheable(false)
 @Table(name = "ebooks")
 public class Ebook implements DomainEntity<Long> {
 
