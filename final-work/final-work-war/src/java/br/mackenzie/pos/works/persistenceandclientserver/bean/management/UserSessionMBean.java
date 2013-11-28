@@ -1,9 +1,12 @@
 package br.mackenzie.pos.works.persistenceandclientserver.bean.management;
 
 import br.mackenzie.pos.works.persistenceandclientserver.domain.management.Role;
+import br.mackenzie.pos.works.persistenceandclientserver.domain.product.Ebook;
 import br.mackenzie.pos.works.persistenceandclientserver.service.UserSessionService;
 import br.mackenzie.pos.works.persistenceandclientserver.util.Encryptor;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
@@ -76,5 +79,13 @@ public class UserSessionMBean implements Serializable {
 
     public void insert() {
         this.service.insert();
+    }
+    
+    public List<Ebook> getEbooks() {
+        List<Ebook> result = new ArrayList<>();
+        if(service.getUser() != null) {
+            result.addAll(service.getUser().getEbooks());
+        }
+        return result;
     }
 }

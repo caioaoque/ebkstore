@@ -43,10 +43,6 @@ public class Order implements DomainEntity<Long> {
     @Column(name = "ord_creation", insertable = false, updatable = false, columnDefinition = "TIMESTAMP default CURRENT_TIMESTAMP")
     private Date creation;
 
-    @Column(name = "ord_status", nullable = false)
-    @Enumerated(EnumType.STRING)
-    private OrderStatus currentStatus = OrderStatus.OPENED;
-
     @ManyToMany
     @JoinTable(name = "order_ebooks", joinColumns = @JoinColumn(name = "ord_id", referencedColumnName = "ord_id"),
             inverseJoinColumns = @JoinColumn(name = "ebk_id", referencedColumnName = "ebk_id"))
@@ -78,14 +74,6 @@ public class Order implements DomainEntity<Long> {
 
     public void setCreation(final Date creation) {
         this.creation = creation;
-    }
-
-    public OrderStatus getCurrentStatus() {
-        return this.currentStatus;
-    }
-
-    public void setCurrentStatus(final OrderStatus currentStatus) {
-        this.currentStatus = currentStatus;
     }
 
     public List<Ebook> getEbooks() {

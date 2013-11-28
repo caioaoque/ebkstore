@@ -79,4 +79,11 @@ public class UserSessionService {
         this.em.persist(newCustomer);
     }
 
+    public void refreshUser() {
+        if(this.user != null) {
+            this.user = this.em.find(User.class, this.user.getId());
+            this.em.refresh(this.user);
+        }
+    }
+
 }

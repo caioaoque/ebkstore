@@ -157,9 +157,7 @@ public class User implements DomainEntity<Long> {
 
     public Set<Ebook> getEbooks() {
         for (Order order : orders) {
-            if (OrderStatus.PAID.equals(order.getCurrentStatus())) {
-                ebooks.addAll(order.getEbooks());
-            }
+            ebooks.addAll(order.getEbooks());
         }
         return ebooks;
     }

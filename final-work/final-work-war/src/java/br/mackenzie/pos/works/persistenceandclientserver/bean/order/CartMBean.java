@@ -62,6 +62,7 @@ public class CartMBean implements Serializable {
         order.setUser(this.userSessionBean.getService().getUser());
         this.orderService.save(order);
         this.service.clearCart();
+        this.userSessionBean.getService().refreshUser();
         return EBOOK_LIST;
     }
 }
