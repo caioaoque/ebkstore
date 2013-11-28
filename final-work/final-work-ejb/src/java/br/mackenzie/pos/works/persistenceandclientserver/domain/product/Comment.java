@@ -25,6 +25,7 @@ public class Comment implements DomainEntity<Long> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "cmt_id")
     private Long id;
 
     @ManyToOne

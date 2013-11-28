@@ -32,7 +32,7 @@ public class Ebook implements DomainEntity<Long> {
     @Column(name = "ebk_title")
     private String title;
 
-    @Column(name = "pages")
+    @Column(name = "ebk_pages")
     private Integer pages;
 
     @Column(name = "ebk_desc")
